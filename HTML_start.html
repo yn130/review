@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>중첩연습</title>
+</head>
+<body>
+    <h1>나의 첫 HTML 문서입니다. </h1>
+    <div>안녕하세요.</div>
+    
+    <!-- 중첩(nested)-->
+    <!-- div: 블록(block)요소 / span: 인라인(inline)요소 -->
+    <div style="background-color: aquamarine;">
+        난 div, span의 parent
+        <span style="background-color: rgb(223, 12, 128);">난 span, div의 child</span>
+        <span style="background-color: green;">난 span, div의 child</span>
+    </div>
+
+    <div style="background-color: rgb(255, 251, 12);">또 다른 div</div>
+
+
+    <hr>
+<!-- 제목 태그-->
+
+    <h1>첫번째로 큰 제목</h1>
+    <h2>두번째로 큰 제목</h2>
+    <h3>세번째로 큰 제목</h3>
+    <h4>네번째로 큰 제목</h4>
+    <h5>다섯번째로 큰 제목</h5>
+    <h6>여섯번째로 큰 제목</h6>
+    <!-- h7 태그는 존재하지 않는 태그임, 오류로 나타나는게 아니라 div 태그와 같이 처리 -->
+    <h7>제목 ??</h7>
+
+
+    <hr>
+<!-- 본문 태그-->
+
+
+    <p>여기는 본문 영역입니다. </p>
+    <br>
+    <br>
+    <br>
+    <p>여기는 본문 영역입니다. </p>
+
+    <hr>
+<!-- 목록 태그-->
+
+    <h3>오늘의 할일</h3>
+    <!-- ul tag type attribute: dis(default), square, circle, none -->
+    <ul type="square">
+        <li>HTML 복습하기</li>
+        <li>운동하기</li>
+        <li>git 명령어 연습하기</li>
+    </ul>
+
+    <h3>아이스 카페라떼 레시피</h3>
+    <!-- ol tag type attribute: 1(default), a, A, i, I  -->
+    <!-- start attr: 시작 번호, reversed: 역순으로 -->
+    <ol type="1" start="0" reversed>
+        <li>우유를 180ml 컵에 넣어주세요.</li>
+        <li>얼음을 컵에 가득 넣어주세요.</li>
+        <li>에스프레소 샷을 넣어주세요.</li>
+        <li>완성! 맛있게맛있게 드세요! </li>
+    </ol>
+
+    <!-- 수평줄 태그 -->
+    <hr>
+
+
+    <hr>
+    <!-- 목록 태그의 중첩 사용 -->
+    <h3>내가 좋아하는 음식</h3>
+    <ul>
+        <li>양식
+            <ul>
+                <li>스파게티</li>
+                <li>스테이크</li>
+            </ul>
+        </li>
+        <li>한식
+            <ul>
+                <li>김치찌개</li>
+                <li>국밥</li>
+            </ul>
+        </li>
+        <li>일식
+            <ul>
+                <li>초밥</li>
+                <li>우동</li>
+            </ul>
+        </li>
+    </ul>
+
+<hr>
+
+<!-- 꾸미기 태그 -->
+
+    <ol>
+        <li><strong>우유</strong>를 <em>180ml</em> 컵에 넣어주세요.</li>
+        <li><b>얼음</b>을 컵에 <u>가득</u> 넣어주세요.</li>
+        <li>에스프레소 <i>샷</i>을 넣어주세요.</li>
+        <li><u>완성!</u> <del>맛있게</del>맛있게 드세요! </li>
+    </ol>
+
+
+<hr>
+ <!-- 이미지 태그 -->
+
+ 
+    <h2>img 태그</h2>
+    <!-- 상대경로 : 현재 위치를 기준으로하는 파일 경로, 따라서 아래의 두 이미지태그 모두 같은 경로임! -->
+    <!-- 프로젝트의 위치가 바뀌어도 그대로 사용할 수 있다는 장점 /  목적파일(sesac.png)의 위치가 바뀐다면 상대경로를 수정해야하는 단점 -->
+    <!-- ex. ./src/img.png, ../../img/img.png  -->
+    <img src="./image/sesac.png" alt="새싹" width="300">
+    <img src="image/sesac.png" alt="새싹" width="300">
+
+    <!-- 절대경로(상대경로와 반대) : root(맨 처음, 최상단 주소)부터 해당 파일까지의 경로 -->
+    <!-- 내 로컬 환경에서는 어느 곳에서든 접근이 가능하다는 장점 / 다른 로컬에서는 절대 경로가 실제로 동일해야만 접근이 가능하다는 단점 -->
+    <!--ex. https://www.naver.com, C;/User/~~~~  -->
+    <img src="/Users/yes/Documents/MB_yes/review/image/sesac.png" alt="새싹" width="300">
+
+
+    <!-- 인터넷 이미지 주소로 저장  -->
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2kqtXBbDA1u_QiRbckgbOOmmikYUqurH2wLPY8xmNEw&s" alt="애플로고">
+
+
+
+    <hr>
+ <!-- 이미지 태그 -->
+
+
+    <h2>a 태그</h2>
+    <!-- 
+        a tag target attribute : 링크가 열릴 위치 지정
+        - _self(default) : 현재 탭에서 열기
+        - _blank : 새 탭으로 열기
+     -->
+    <a href="https://www.naver.com/">네이버 바로가기</a>
+    <a href="https://www.naver.com/" target="_blank">네이버 바로가기</a>
+    <a href="https://www.naver.com/" target="_blank" title="마우스를 올리면 나타나는 제목!">네이버 바로가기</a>
+
+
+    <hr>
+
+    <!-- a태그의 href 속성 값으로는 인터넷 상의 주소 뿐만 아니라 프로젝트 폴더 내의 다른 HTML 문서의 주소를 넣어도 됨 -->
+    <a href="./html-start.html">HTML 시작하기 공부해보기</a>
+
+
+
+    <hr>
+    <!-- 태그 실습 -->
+
+    <a href="https://google.com" target="_blank" title="스타벅스">
+        <img src="./image/starbucks.png" alt="스타벅스" width="200">
+    </a>
+
+
+     <h1>스타벅스</h1>
+
+     <ul>
+        <li>
+            <h2>아메리카노</h2>
+            <ol>
+                <li>R: 3000won</li>
+                <li>L: 3500won</li>
+            </ol>
+        </li>
+
+        <li>
+            <h2>카페라떼</h2>
+            <ol>
+                <li>R: 3000won</li>
+                <li>L: 3500won</li>
+            </ol>
+        </li>
+
+        <li>
+            <h2>딸기주스</h2>
+            <ol>
+                <li>R: 3000won</li>
+                <li>L: 3500won</li>
+            </ol>
+        </li>
+
+        <li>
+            <h2>레모네이드</h2>
+            <ol>
+                <li>R: 3000won</li>
+                <li>L: 3500won</li>
+            </ol>
+        </li>
+    </ul>
+    <hr>
+    <h2>음료설명</h2>
+    <P><b>아메리카노</b>는 <i>물</i>에 <U>에스프레소</U> 샷을 탄 음료입니다.</P>
+    <p><b>카페라떼</b>는 <i>우유</i>에 <u>에스프레소</u> 샷을 탄 음료입니다.</p>
+    <p><strong>딸기주스</strong>는 <u>유기농 딸기</u>를 넣고 만든 <i>생과일</i>주스입니다.</p>
+    <p><strong>레모네이드</strong>는 <u>레몬 착즙 주스</u>와 <i>탄산수</i>를 이용해 만든 <b>톡</b> 쏘는 <i>탄산음료</i>입니다. </p>
+
+<hr>
+
+<!-- 태그연습 2 -->
+
+
+
+
+
+</body>
+</html>
+</body>
+</html>
