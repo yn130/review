@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<>
+    <h1>폼 관련 태그를 알아보자</h1>
+
+    <!-- form 태그 : 사용자로부터 입력받은 요소들을 감싸는 태그
+        - action 속성 : 사용자가 폼에 입력한 값을 전달할 주소 입력
+        - method 속성 : 사용자가 폼에 입력한 값을 전달할 방법 입력
+        => 위 두가지 속성은 '서버'와 연관된 내용 -> 백엔드 진도 나갈 때 다시 소개
+        
+        form은 화면에 드러나지 않는 추상적인 태그(앵식)
+    -->
+    <form action="" method="">
+        <!-- form 요소: 폼 태그 안에 있는 사용자의 입력값을 받는 요소
+                input, textarea, select ... 태그들에는 name 속성을 가질 수 있음 / 서버와 관련-->
+
+
+        <!-- input 태그
+            - disabled 속성: 편집 불가능하도록 막음
+            - placeholder 속성 : 미리보기 택스트 (안내문구)  -->
+
+
+        Text <input type="text"> <br>
+        Text <input type="text" disabled> <br>
+
+
+        <!-- label 태그의 for 속성값과 input 태그의 id 속성값을 일치시키면, label 글씨를 클릭했을 때 input 창에 포커싱이 됨
+            => 웹 접근성에 적합(사용자가 편리하게 사용할 수 있기 때문) -->
+
+        <label for="user-email">이메일</label>
+        <input type="email" id="user-email" placeholder="abc@test.com" name="">
+
+        <br>
+        <br>
+
+        <input type="color"> <br>
+        <input type="range"> <br>
+        <input type="file"> <br>
+        <input type="number"> <br>
+        <input type="date"> <br>
+        <input type="datetime-local"> <br>
+        <input type="password"> <br>
+    
+        <!-- radio input vs. checkbox input -->
+        <!-- radiom checkbox input: 같은 name 속성값을 부여해서 '카테고리'화 해줘야 함 +value 값도 같이 입력하기 -->
+        <!-- checked 속성: 해당 옵션이 기본으로 체크되어 있도록 해줌 -->
+        <h5>당신의 취미는 무엇인가요?</h5>
+        <input type="checkbox" name="interest" value="baseball" checked>야구
+        <input type="checkbox" name="interest" value="movie">영화
+        <input type="checkbox" name="interest" value="lay-down">누워있기
+        
+        
+        <h5>당신의 성별은 무엇인가요?</h5>
+        <input type="radio" name="gender" value="female" id="female"><label for="female">여자</label>
+        <input type="radio" name="gender" value="male" id="male"><label for="male">남자</label>
+
+        <!-- 퀴즈1. 강의 코드에서 checkbox와 radio 버튼에서 label 태그의 사용 유무에는 어떤 차이가 있나요? : 라벨 태그를 사용하면 라벨에 입력된 텍스트를 클릭했을 때 옵션이 선택됨 -->
+        <!-- 퀴즈2. 다음 코드는 radio 버튼임에도 배타적 선택(하나만 선택)이 되지 않습니다. 이유는 무엇인가요? 같은 name 값이 부여되지 않아서. -->
+        <h5>당신은 무슨 개발자인가요?</h5>
+        <input type="radio" value="f" id="web" checked /><label for="web">웹 개발자</label>
+        <input type="radio" value="m" id="app" /><label for="app">앱 개발자</label>
+
+        <br>
+
+        <input type="radio" value="f" id="web" name="dev"  checked /><label for="web">웹 개발자</label>
+        <input type="radio" value="m" id="app" name="dev" /><label for="app">앱 개발자</label>
+
+        <br>
+        <br>
+
+        <!-- textarea 태그 : input보다 더 많은 양의 내용(여러 줄)을 입력받을 수 있는 요소
+            - cols, rows: 가로, 세로 길이를 나타냄
+            - 유저가 마우스 커서를 이용해 우측 하단을 조절하면 크기 변경 가능
+        -->
+        <textarea placeholder="문의사항을 입력해주세요"></textarea>
+        <textarea placeholder="문의사항을 입력해주세요" cols="30" rows="10"></textarea>
+
+        <br>
+        <!-- select 태그: 옵션 메뉴를 제공하는 드롭다운 리스트 -->
+        <select name="flowers">
+            <optgroup label="red-flower">
+                <option value="장미">장미</option>
+                <option value="카네이션" selected>카네이션</option>
+                <option value="동백꽃">동백꽃</option> 
+            </optgroup>
+            <optgroup label="white-flower">
+                <option value="벚꽃">벚꽃</option>
+                <option value="목련">목련</option>
+                <option value="매화">매화</option> 
+            </optgroup>
+        </select>
+
+        <br>
+
+        <!-- 버튼
+            1. input 태그의 type 속성을 이용해서 버튼 만들기
+            2. button 태그 
+        -->
+        <!-- 1). 단순 버튼: 클릭 가능한 버튼 -->
+        <input type="button" value="단순버튼 1">
+        <button type="button">단순버튼 2</button>
+        <br>
+        <!-- 2). 제출 버튼: '폼'을 제출하는 버튼 -->
+        <input type="submit" value="제출버튼 1">
+        <button type="submit">제출버튼 2</button>
+
+        <!-- 참고, type 속성을 생략한 button 태그
+            -  type 속성: button, submit 값 사용
+
+            - button type: 폼 태그 바깥에 button 태그가 있을 때 기본 값
+            - submit type: 폼 태그 내부에 button 태그가 있을 때 기본 값
+            -->
+
+            <button>버튼1</button>
+    </form>
+    <button>버튼2</button>
+
+
+    <form action="">
+        <input type="text" name="" id="">
+    </form>
+</body>
+</html>
