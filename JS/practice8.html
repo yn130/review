@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>댓글 등록하기</title>
+  </head>
+  <body>
+    <h1>댓글 등록하기</h1>
+    <form>
+      <label for="userid">아이디</label>
+      <input type="text" id="userid" name="userid" />
+      <label for="comment">댓글</label>
+      <input type="text" id="comment" name="comment" />
+      <button type="submit">등록</button>
+    </form>
+    <ul class="comment-list"></ul>
+
+    <script>
+    const form = document.querySelector('form');
+
+    form.addEventListener("submit", function(event){
+        event.preventDefault();
+
+        const userIdInput = document.getElementById("userid");
+        const commentInput = document.getElementById("comment");
+        const userIdValue = userIdInput.value;
+        const commentValue = commentInput.value;
+
+        const li = document.createElement("li");
+        li.textContent = `${userIdValue} - ${commentValue}`;
+
+
+        const commentList = document.querySelector(".comment-list");
+        commentList.appendChild(li);
+
+        document.querySelector('#userid').value = '';
+        document.querySelector('#comment').value = '';
+
+    });
+    </script>
+  </body>
+</html>
