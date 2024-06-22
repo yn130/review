@@ -1,15 +1,18 @@
 const express = require('express');
 const app = express();
-const PORT = 8080;
+const PORT = 8000;
 
 app.set('view engine', 'ejs');
-app.set('views', './views');
+app.set('views', './ex');
+app.use(express.static('./public'));
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 
+
 app.get('/', (req,res)=>{
-    res.render('dynamic', { title : '동적 폼'})
+    res.render('index', { title : '로그인'})
 });
 //////////////////////////////////////////////////
 //ajax get 요청 처리 
