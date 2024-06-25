@@ -34,10 +34,10 @@
                 <div class="fourth">  
                     <!-- <button type="button" class="ajaxGetBtn" onclick="ajaxGet();">ajax get<br>다음</button>
                     <button type="button" class="ajaxpostBtn" onclick="ajaxPost();">ajax post<br>다음</button> -->
-                    <button type="button" onclick="axiosGet();">axios get <br>다음</button>
-                    <button type="button" onclick="axiosPost();">axios post<br>다음</button>
-                    <!-- <button type="button" onclick="fetchGet();">fetch get 방식 요청</button>
-                    <button type="button" onclick="fetchPost();">fetch post 방식 요청</button> -->
+                    <!-- <button type="button" onclick="axiosGet();">axios get <br>다음</button>
+                    <button type="button" onclick="axiosPost();">axios post<br>다음</button> -->
+                    <button type="button" onclick="fetchGet();">fetch get 방식 요청</button>
+                    <button type="button" onclick="fetchPost();">fetch post 방식 요청</button>
                 </div>
             </form>
         </div>
@@ -49,7 +49,7 @@
         function fetchGet() {
             console.log('click fetchGet btn!');
             const form = document.forms['register'];
-            const urlQuery = `?name=${form.name.value}&gender=${form.gender.value}`;
+            const urlQuery = `?id=${form.id.value}`;
 
             // fetch() 디폴트로 GET 방식으로 동작
             // fetch(`fetch${urlQuery}`, { method: 'GET' })
@@ -61,20 +61,15 @@
                 .then((data) => {
                     console.log(data); // js obj
                     resultBox.textContent 
-                        = `GET /fetch 요청에 대한 응답 완료! ${data.name}님은 ${data.gender}이시죠?ㅎㅎ`;
-                    resultBox.style.color = 'limegreen';
+                        = `GET /fetch 요청에 대한 응답 완료! ${data.id}님 안녕하세요`;
+                    resultBox.style.color = 'blue';
                 });
         }
         
         function fetchPost() {
             console.log('click fetchPost btn!');
             const form = document.forms['register'];
-
-            // 서버로 보낼 데이터 양식 생성하기
-            const data = {
-                name: form.name.value,
-                gender: form.gender.value
-            };
+            const data = {id: form.id.value};
 
             // fetch: POST 요청시 headers 옵션을 통해 JSON 포맷을 사용한다고 알려줘야 함
             // => body에서도 json 형식으로 데이터를 바꾸어 보내야 함.
@@ -92,7 +87,7 @@
                 .then((data) => {
                     console.log(data); // js obj
                     resultBox.textContent 
-                        = `POST /fetch 요청에 대한 응답 완료! ${data.name}님은 ${data.gender}이시죠?ㅎㅎ`;
+                        = `POST /fetch 요청에 대한 응답 완료! ${data.id}님 안녕하세요`;
                     resultBox.style.color = 'hotpink';
                 });
         }
@@ -140,7 +135,6 @@
                     resultBox.textContent = '앗! 알 수 없는 에러 발생.. 다시 시도해주세요..';
                 })
             }
-
 
         function ajaxPost() {
             console.log('click ajaxPost btn!');
