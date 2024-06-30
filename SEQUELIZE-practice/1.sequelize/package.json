@@ -1,5 +1,5 @@
 {
-  "name": "16-mvc-mysql",
+  "name": "1.sequelize",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -12,6 +12,10 @@
   "dependencies": {
     "ejs": "^3.1.10",
     "express": "^4.19.2",
-    "mysql": "^2.18.1"
+    "multer": "^1.4.5-lts.1",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.10.1",
+    "sequelize": "^6.37.3",
+    "sequelize-cli": "^6.6.2"
   }
 }

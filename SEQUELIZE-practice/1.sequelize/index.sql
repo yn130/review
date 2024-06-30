@@ -8,7 +8,9 @@ create table visitor (
     comment mediumtext
 );
 
+
 desc visitor;
+drop table visitor;
 
 -- 데이터 추가
 insert into visitor values

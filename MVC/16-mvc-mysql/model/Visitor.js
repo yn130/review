@@ -13,12 +13,12 @@ const mysql = require('mysql');
 const conn = mysql.createConnection({
   host: 'localhost',
   user: 'user',
-  password: '1234',
+  password: '12345678',
   database: 'codingon'
 }); // database 연결 객체
 
 exports.getVisitors = (callback) => {
-  conn.query(`select * from visitor`, (err, rows) => {
+  conn.query(`select * from vt`, (err, rows) => {
     if (err) {
       throw err;
     }
@@ -29,7 +29,7 @@ exports.getVisitors = (callback) => {
 };    
 
 exports.getVisitor = (targetId, callback) => {
-  conn.query(`select * from visitor where id=${targetId}`, (err, rows) => {
+  conn.query(`select * from vt where id=${targetId}`, (err, rows) => {
     if (err) {
       throw err;
     }
@@ -41,7 +41,7 @@ exports.getVisitor = (targetId, callback) => {
 }
 
 exports.postVisitor = (data, callback) => {
-  conn.query(`insert into visitor(name, comment) values ('${data.name}', '${data.comment}')`, 
+  conn.query(`insert into vt(name, comment) values ('${data.name}', '${data.comment}')`, 
     (err, rows) => {
       if (err) {
         throw err;
@@ -65,7 +65,7 @@ exports.postVisitor = (data, callback) => {
 
 exports.deleteVisitor = (targetId, callback) => {
   // targetId: 삭제해야할 visitor id
-  conn.query(`delete from visitor where id=${targetId}`, (err, rows) => {
+  conn.query(`delete from vt where id=${targetId}`, (err, rows) => {
     if (err) {
       throw err;
     }
@@ -88,7 +88,7 @@ exports.deleteVisitor = (targetId, callback) => {
 exports.patchVisitor = (updateData, callback) => {
   const { id, name, comment } = updateData;
   conn.query(
-    `update visitor set name='${name}', comment='${comment}' where id=${id}`,
+    `update vt set name='${name}', comment='${comment}' where id=${id}`,
     (err, rows) => {
       if (err) {
         throw err;
