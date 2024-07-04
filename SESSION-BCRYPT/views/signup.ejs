@@ -20,33 +20,32 @@
       <input id="nickname" type="text" name="name" required /><br />
       <button type="button" onclick="register();">Register</button>
     </form>
-    <!-- TODO: href 속성값 설정하기 -->
+
      <a href="/">홈</a>
     <a href="/signin">Login</a>
 
     <script>
-      // TODO: [Register] 버튼 클릭시 서버에 회원가입 요청하기
-      // POST /user/signup
-      function register() {
+      async function register() {
         console.log('click 등록 btn');
         const form = document.forms['form_register'];
-
-        axios({
-          method: 'POST',
-          url: '/signup',
-          data: {
-            userid: form.userid.value,
-            name: form.name.value,
-            pw: form.pw.value
-          }
-        }).then((res) => {
-          return res.data; 
-        }).then(() => {
+        try { 
+          const res = await  axios({
+            method: 'POST',
+            url: '/signup',
+            data: {
+              userid: form.userid.value,
+              name: form.name.value,
+              pw: form.pw.value
+            }
+          });
+          const data = res.data
           alert('회원가입 성공');
           document.location.href = '/signin';
-        })
-    }
-
+        } catch (error) {
+          console.error(error);
+          alert('회원가입 중 오류가 발생했습니다.');
+        }
+      };
     </script>
   </body>
 </html>

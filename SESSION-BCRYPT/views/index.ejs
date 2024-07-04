@@ -76,36 +76,35 @@
     </div>
   </main>
   <script>
-    function loadProfile() {
-      console.log('click 내프로필 btn');
-      axios.get('/profile')
-        .then(res => {
-          if (res.status === 200) {
-            window.location.href = '/profile';
-          } else {
-            alert('프로필 정보를 불러오는 데 실패했습니다.');
-          }
-        })
-        .catch(error => {
-          console.error('There was an error!', error);
-          alert('서버와의 통신 중 오류가 발생했습니다.');
-        });
+    async function loadProfile() {
+        console.log('click 내프로필 btn');
+        try {
+            const res = await axios.get('/profile');
+            if (res) {
+                window.location.href = '/profile';
+            } else {
+                alert('프로필 정보를 불러오는 데 실패했습니다.');
+            }
+        } catch (error) {
+            console.error(error);
+            alert('서버와의 통신 중 오류가 발생했습니다.');
+        }
     }
 
-    function loadUser() {
+
+    async function loadUser() {
       console.log('click 전체회원조회 btn');
-      axios.get('/user')
-        .then(res => {
-          if (res.status === 200) {
-            window.location.href = '/user';
-          } else {
-            alert('프로필 정보를 불러오는 데 실패했습니다.');
-          }
-        })
-        .catch(error => {
-          alert('서버와의 통신 중 오류가 발생했습니다.');
-        });
-    }
+      try {
+        const res = axios.get('/user')
+        if(res) {
+          window.location.href = '/user';
+        } else {
+          alert('유저 정보를 불러오는 데 실패했습니다.');
+        }
+      } catch (error) {
+        alert('서버와의 통신 중 오류가 발생했습니다.');
+      }
+    };
 
 
   </script>

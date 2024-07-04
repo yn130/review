@@ -1,7 +1,4 @@
-// Cuser.js
 const User = require('../model/User');
-
-
 
 // 시작화면
 exports.main = (req, res) => {
@@ -82,9 +79,7 @@ exports.profile = (req, res) => {
 
 // 회원정보 수정
 exports.editProfile = (req, res) => {
-    // console.log('정보 수정에서 난 뭐야? ', req.body); // { id: '1', pw: '1234', name: 'seannn' }
     User.editProfile(req.body, (result) => {
-    //   console.log('객체 result 는?', { result }); // { result: true }
       res.send({ result });
     });
   };
@@ -97,7 +92,7 @@ exports.deleteProfile = (req,res) => {
 };
 
 
-
+// 회원 조회
 exports.userList = (req, res) => {
     const name = req.session.user.name;
     User.userList((err, users) => {

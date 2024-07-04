@@ -26,48 +26,52 @@
     </form>
 
     <script>
-      function profileEdit() {
-        console.log('click 수정 btn');
-        const form = document.getElementById('form_profile');
-        axios({
-          method: 'PATCH',
-          url: '/profile/edit',
-          data: {
-            userid: form.userid.value,
-            pw: form.password.value,
-            name: form.name.value
+      async function profileEdit() {
+          console.log('click 수정 btn');
+          const form = document.getElementById('form_profile');
+          try {
+              const res = await axios({
+                  method: 'PATCH',
+                  url: '/profile/edit',
+                  data: {
+                      userid: form.userid.value,
+                      pw: form.password.value,
+                      name: form.name.value
+                  }
+              });
+              console.log(res.data);
+              if (res.data.result) {
+                  alert('수정 완료');
+                  document.location.href = '/';
+              }
+          } catch (error) {
+              console.error(error);
           }
-        }).then(res => {
-          console.log(res.data);
-          if (res.data.result) {
-            alert('수정 완료');
-          }
-        }).catch(error => {
-          console.error('There was an error!', error);
-        });
-      }
+      };
 
-      function profileDelete() {
+     async function profileDelete() { 
+      console.log('click 삭제 btn');
         if (!confirm('진짜로 삭제하겠습니까?')) { 
           return;
-        } 
-        axios({
+        }
+        try {
+          const res = await axios({
             method: 'DELETE',
             url: '/profile/delete',
             data: {
                 userid: document.getElementById('userid').value
             }
         })
-        .then((res) => {
-            console.log(res.data);
-            if (res.data.result) {
-                alert('회원정보 삭제 성공!');
-                document.location.href = '/';
-            }
-        }).catch(error => {
-          console.error('There was an error!', error);
-        });
-    };
+          console.log(res.data);
+          if (res.data.result) {
+            alert('회원정보 삭제 성공!');
+            document.location.href = '/';
+          }
+        } catch (error) {
+              console.error(error);
+          }
+      };
+
     </script>
   </body>
 </html>
