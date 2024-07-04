@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- jQuery CDN (ajax 간편하게 사용하고자 불러옴) -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <!-- Axios CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <h1>회원 정보</h1>
+    <a href="/">HOME</a>
+    <p>ID 수정 불가능, Password, Name 수정 가능</p>
+
+    <form id="form_profile">
+      <label for="userid">ID</label>
+      <input id="userid" type="text" name="userid" value="<%=data.userid%>" readonly /><br />
+      <label for="password">Password</label>
+      <input id="password" type="password" name="password" value="<%=data.pw%>" required /><br />
+      <label for="name">Name</label>
+      <input id="name" type="text" name="name" value="<%=data.name%>" required /><br />
+      <button type="button" onclick="profileEdit();">Edit</button>
+      <button type="button" onclick="profileDelete();">Delete</button>
+    </form>
+
+    <script>
+      function profileEdit() {
+        console.log('click 수정 btn');
+        const form = document.getElementById('form_profile');
+        axios({
+          method: 'PATCH',
+          url: '/profile/edit',
+          data: {
+            userid: form.userid.value,
+            pw: form.password.value,
+            name: form.name.value
+          }
+        }).then(res => {
+          console.log(res.data);
+          if (res.data.result) {
+            alert('수정 완료');
+          }
+        }).catch(error => {
+          console.error('There was an error!', error);
+        });
+      }
+
+      function profileDelete() {
+        if (!confirm('진짜로 삭제하겠습니까?')) { 
+          return;
+        } 
+        axios({
+            method: 'DELETE',
+            url: '/profile/delete',
+            data: {
+                userid: document.getElementById('userid').value
+            }
+        })
+        .then((res) => {
+            console.log(res.data);
+            if (res.data.result) {
+                alert('회원정보 삭제 성공!');
+                document.location.href = '/';
+            }
+        }).catch(error => {
+          console.error('There was an error!', error);
+        });
+    };
+    </script>
+  </body>
+</html>

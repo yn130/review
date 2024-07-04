@@ -1,0 +1,140 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: rgb(212, 219, 229);
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    /* align-items: center; */
+    background-color: white;
+    width: 90%;
+    height: 500px;
+    max-width: 1200px;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.login-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 50%;
+}
+
+
+.login-text img {
+    width: 120px;
+    margin-bottom: 20px;
+    margin-left: -30px; 
+}
+
+.login-text h1 {
+    font-size: 2.5em;
+    font-weight: normal;
+    margin-bottom: 10px;
+}
+
+.login-text p {
+    font-size: 1.2em;
+    color: #70757a;
+}
+
+.googleDiv {
+    margin-top: 20px;
+}
+
+.login-container {
+
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content:center;
+}
+
+.formtag {
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content:space-around;
+}
+
+input {
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid rgb(59, 59, 59);
+    margin: 10px 0;
+    padding: 15px;
+    font-size: 1.1em;
+}
+
+.emailexp, .third {
+    font-size: 1em;
+    text-align: right;
+    margin-top: 10px;
+}
+
+.fourth {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+button {
+    font-size: 1em;
+    background-color: rgb(0, 57, 189);
+    color: #fff;
+    padding: 10px 30px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: rgb(0, 50, 170);
+}
+
+.result {
+    margin-top: 20px;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .main-container {
+        flex-direction: column;
+        align-items: center;
+        width: 90%;
+        max-width: 600px;
+        padding: 20px;
+    }
+
+    .login-text, .login-container {
+        width: 100%;
+        align-items: center;
+    }
+    .login-text img {
+        margin-left: 0px; 
+    }
+
+    .login-text h1, .googleDiv, .emailexp, .third, .fourth {
+        text-align: center;
+    }
+
+    input {
+        width: 100%;
+    }
+}
