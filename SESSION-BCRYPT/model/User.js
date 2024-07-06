@@ -1,4 +1,6 @@
 const { User } = require('../models/index')
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 // 내 프로필
 exports.profile = async (data, cb) => {
@@ -24,7 +26,8 @@ exports.aboutRoginInfo = async (data, cb) => {
 //회원가입
 exports.signupDone = async (data, cb) => {
   try {
-    const user = await User.create({ userid: data.userid, name: data.name, pw: data.pw });
+    const hashedPw = await bcrypt.hashSync(data.pw, saltRounds); 
+    const user = await User.create({ userid: data.userid, name: data.name, pw: hashedPw });
     cb(user.id);
   } catch (err) {
     throw err;
@@ -36,7 +39,8 @@ exports.signupDone = async (data, cb) => {
 exports.editProfile = async (updateData, cb) => {
   const { userid, pw, name } = updateData;
   try {
-    await User.update({ pw, name }, { where: { userid } });
+    const hashedPw = await bcrypt.hashSync(pw, saltRounds); 
+    await User.update({ pw: hashedPw, name }, { where: { userid } });
     cb(true);
   } catch (err) {
     throw err;
