@@ -1,6 +1,7 @@
 // import Prac1 from "./Prac1";
 // import Prac2 from "./Prac2";
-import Prac3 from "./Prac3";
+// import Prac3 from "./Prac3";
+import Prac4 from "./Prac4";
 
 
 function App() {
@@ -12,7 +13,10 @@ function App() {
       {/* <Prac2 /> */}
       {/* <hr /> */}
 
-      <Prac3 />
+      {/* <Prac3 /> */}
+      {/* <hr />*/}
+
+      <Prac4 />
     
     </div>
 
