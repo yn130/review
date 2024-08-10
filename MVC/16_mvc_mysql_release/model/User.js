@@ -7,6 +7,7 @@ const conn = mysql.createConnection({
     database: 'codingon'
   });
 // TODO: 모델 코드
+
 //회원가입
 exports.signupDone = (data, cb) => {
     conn.query(`INSERT INTO user (userid, name, pw) VALUES ('${data.userid}', '${data.name}', '${data.pw}')`,
