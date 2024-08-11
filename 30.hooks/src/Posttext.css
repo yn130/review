@@ -1,0 +1,42 @@
+.header {
+    background-color: rgb(39, 111, 255);
+    color: white;
+    height: 50px;
+    font-size: 20px;
+    font-weight: bolder;
+    line-height: 50px;
+}
+
+
+.PostItem {
+    margin: 30px;
+    padding: 20px;
+    background-color: rgb(222, 236, 252);
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px 5px #d4d4d4;
+    height: 100px;
+    width: 500px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+
+}
+
+
+.title-idContainer {
+    text-align: left;
+}
+
+
+.id {
+    color: rgb(39, 111, 255);
+}
+
+.title {
+    color: gray;
+}
+
+.body {
+    font-weight: bold;
+    text-align: left;
+}
