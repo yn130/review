@@ -1,0 +1,47 @@
+$color-white: white;
+$color-blue: rgb(45, 139, 246);
+$color-grey:  #a09f9f;
+
+
+.header {
+    background-color:  $color-blue;
+    color: $color-white;
+    height: 50px;
+    font-size: 20px;
+    font-weight: bolder;
+    line-height: 50px;
+}
+
+
+.PostItem {
+    margin: 30px;
+    padding: 20px;
+    background-color:mix($color-white, $color-blue, 77%);
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px 5px $color-grey;
+    height: 100px;
+    width: 500px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+
+    .title-idContainer {
+        text-align: left;
+
+        .id {
+            color: $color-blue;
+        }
+        
+        .title {
+            color: $color-grey;
+        }
+    }
+
+    .body {
+        font-weight: bold;
+        text-align: left;
+    }
+
+}
+
+
