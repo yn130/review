@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'; 
-import { minus, plus } from './store/bankSlice'; // 'totalMoney' 제거
+import { minus, plus } from './store/bankSlice'; 
 import { useRef } from 'react';
 
 function App() {
