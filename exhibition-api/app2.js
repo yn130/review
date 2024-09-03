@@ -12,6 +12,7 @@ async function getRecentExhibitionData(limit = 50) {
     let allData = [];
     let pageNo = 1;
     let hasMoreData = true;
+    
 
     try {
         while (hasMoreData && allData.length < limit) {
