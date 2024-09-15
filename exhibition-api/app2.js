@@ -1,3 +1,6 @@
+// 이거 어디서 가져오는건지 확인해보기 
+// 현재 백엔드콘솔에서만 찍힘. 
+
 
 const express = require('express');
 const axios = require('axios');
