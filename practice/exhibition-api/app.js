@@ -2,6 +2,8 @@
 // https://www.culture.go.kr/industry/apiGuideA.do
 //  데이터 확인 완료
 //  데이터양 너무 적음
+// 데이터 요청 파라미터 확인하기 
+
 
 
 
