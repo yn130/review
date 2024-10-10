@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>신선Zip사-Search</title>
+  <style>
+    @font-face {
+        font-family: 'BMJUA';
+        src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    *, *:before, *:after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html, body {
+      font-size: 62.5%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #A7E344;
+      padding-top: 1rem;
+    }
+
+    .search {
+      position: relative;
+      width: 100%;
+      max-width: 40rem; /* 최대 너비를 350px로 설정 */
+      height: 7rem;
+      border: 5px solid #fff;
+      border-radius: 1.5rem;
+      display: flex;
+      align-items: center;
+      padding: 0 1rem;
+    }
+
+    .menu {
+      position: relative;
+      width: 4rem;
+      height: 4rem;
+      background-color: transparent;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 1rem;
+      cursor: pointer;
+    }
+
+    .menu__icon {
+      position: absolute;
+      width: 3rem;
+      height: 2rem;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .menu__line {
+      position: absolute;
+      left: 0;
+      background-color: #fff;
+      height: 0.3rem;
+      width: 100%;
+      border-radius: 0.3rem;
+      pointer-events: none;
+    }
+
+    .menu__line--1 { top: 0; }
+    .menu__line--2 { top: 0; bottom: 0; margin: auto; }
+    .menu__line--3 { bottom: 0; }
+
+    .menu--back.open .menu__line--1 {
+        transform: translate3d(-6.5px, 1px, 0) rotate(135deg) scaleX(.7);
+    }
+
+    .menu--back.open .menu__line--3 {
+        transform: translate3d(-6.5px, -1px, 0) rotate(-135deg) scaleX(.7);
+    }
+
+    .search-input {
+      flex: 1;
+      background: transparent;
+      outline: none;
+      border: none;
+      font-size: 2rem;
+      color: #0e0e0e;
+      height: 5rem;
+      padding: 0;
+      font-family: 'BMJUA', sans-serif;
+    }
+
+    .search-results {
+      width: 100%;
+      max-width: 40rem; /* 최대 너비를 350px로 설정 */
+      margin-top: 3rem;
+    }
+
+    .search-result {
+      border-radius: 1.2rem;
+      padding: 1rem;
+      margin: 1.2rem 0;
+      background: #fff;
+      box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1), -5px -5px 15px rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .search-result:hover {
+      transform: translateY(-3px);
+      box-shadow: 3px 3px 12px rgba(0, 0, 0, 0.1), -3px -3px 12px rgba(255, 255, 255, 0.5);
+    }
+
+    .result-line {
+      display: flex;
+      justify-content: space-between;
+      font-size: 1.8rem;
+      margin-bottom: 0.2rem;
+      font-family: 'BMJUA', sans-serif;
+    }
+
+    .result-line span {
+      margin-right: 1rem;
+    }
+
+    @media (max-width: 350px) {
+      .search {
+        width: 100%;
+        max-width: 100%; /* 모바일에서는 최대 너비가 화면에 맞게 조절 */
+      }
+      .search-input {
+        font-size: 1.6rem;
+      }
+      .menu__icon {
+        width: 2.5rem;
+        height: 1.5rem;
+      }
+    }
+
+    @media (max-width: 320px) {
+      .search {
+        width: 100%;
+      }
+      .search-input {
+        font-size: 1.5rem;
+      }
+      .menu__icon {
+        width: 2.3rem;
+        height: 1.3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="search">
+    <div class="menu menu--back open" id="backButton">
+        <div class="menu__icon">
+            <div class="menu__line menu__line--1"></div>
+            <div class="menu__line menu__line--2"></div>
+            <div class="menu__line menu__line--3"></div>
+        </div>
+    </div>
+    <input type="text" class="search-input" id="searchInput" placeholder="Search..."/>
+  </div>
+
+  <div id="searchResults" class="search-results"></div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('#backButton').on('click', function() {
+        const fridgeType = localStorage.getItem('fridgeType'); 
+        if (fridgeType) {
+          window.location.href = `/fridge/${fridgeType}`;
+        } else {
+          window.location.href = '/fridge/fourDoors'; 
+        }
+      });
+
+      $('#searchInput').on('keypress', function(e) {
+        if (e.which === 13) {
+          const query = $(this).val();
+
+          $.ajax({
+            url: `/search/results?q=${encodeURIComponent(query)}`,
+            method: 'GET',
+            success: function(data) {
+              $('#searchResults').empty();
+              
+              if (Object.keys(data).length > 0) {
+                for (const [fridge, sections] of Object.entries(data)) {
+                  for (const [section, items] of Object.entries(sections)) {
+                    items.forEach(item => {
+                      const expirationDate = new Date(item.expirationDate);
+                      const today = new Date();
+                      const diffTime = expirationDate - today;
+                      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                      const dDayText = diffDays > 0 ? `D-${diffDays}` : diffDays === 0 ? 'D-Day' : `D+${Math.abs(diffDays)}`;
+
+                      // D-Day 텍스트 색상을 결정하는 함수
+                      const getColor = (days) => {
+                        if (days > 3) return '#03a9f4';  // 남은 날짜가 3일 이상이면 파란색
+                        if (days >= 1 && days <= 3) {
+                            const red = 255;
+                            const green = Math.round(194 - (days - 1) * (194 - 174) / 2);
+                            const blue = Math.round(63 - (days - 1) * (63 - 0) / 2);
+                            return `rgb(${red}, ${green}, ${blue})`;  // 남은 날짜가 1~3일 사이면 점차 색이 변함
+                        }
+                        if (days === 0) return 'red';  // 남은 날짜가 0일이면 빨간색
+                        if (days > 0) {
+                            const red = Math.round(213 - (days - 1) * (213 - 130) / 3);
+                            const green = 0;
+                            const blue = Math.round(206 - (days - 1) * (206 - 125) / 3);
+                            return `rgb(${red}, ${green}, ${blue})`;  // 남은 날짜가 0일을 초과하면 붉은색
+                        }
+                        return `rgb(${128 + Math.abs(days) * 10}, 0, ${128 + Math.abs(days) * 10})`;  // 이미 기한이 지난 경우에는 점차 어두운 색
+                      };
+
+                      const color = getColor(diffDays);  // D-Day 텍스트 색상 가져오기
+
+                      const resultElement = $(`
+                        <div class="search-result">
+                          <div class="result-line">
+                            <span style="color: ${color}">${dDayText}</span>
+                            <span>${item.ingredientName}</span>
+                            <span>${item.quantity}개</span>
+                          </div>
+                          <div class="result-line">
+                            <span>${item.ingredientMemo || ''}</span>
+                            <span>${section}</span>
+                          </div>
+                        </div>
+                      `);
+
+                      resultElement.on('click', function() {
+                        localStorage.setItem('selectedFridgeItemID', item.fridgeItemID);
+                        window.location.href = `/ingredient/edit/${item.fridgeItemID}`;
+                      });
+
+                      $('#searchResults').append(resultElement);
+                    });
+                  }
+                }
+              } else {
+                $('#searchResults').append('<div>검색 결과가 없습니다.</div>');
+              }
+            },
+            error: function(err) {
+              console.error(err);
+              $('#searchResults').append('<div>검색 중 오류가 발생했습니다.</div>');
+            }
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>

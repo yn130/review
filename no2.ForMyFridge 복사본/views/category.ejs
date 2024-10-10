@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Ingredients</title>
+    <style>
+/* @font-face 선언 */
+@font-face {
+    font-family: 'BMJUA';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* 전체 페이지에 폰트 적용 */
+body {
+    font-family: 'BMJUA', sans-serif;
+    margin: 20px;
+    background-color: #A7E344;
+}
+
+/* 검색창과 ZIP 이미지를 같은 줄에 배치 */
+#search-container {
+    font-family: 'BMJUA', sans-serif;
+    display: flex;
+    justify-content: center; /* 가로 중앙 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+    width: 85%; /* 부모 요소의 너비에 맞추기 */
+    margin: 0 auto; /* 가로 중앙 정렬 */
+    margin-bottom: 20px;
+    height: 40px; /* 원하는 높이로 설정 */
+
+}
+
+#logo {
+    display: inline-block !important; /* 이미지 크기에 맞게 div의 크기를 조정 */
+    margin-right: 10px; /* 이미지와 검색창 사이에 여백 추가 */
+    width: auto; /* 필요할 경우 width를 auto로 설정 */
+
+}
+
+#ingredientSearch {
+    font-family: 'BMJUA', sans-serif;
+    width: 200px;
+    height: 30px;
+    border-radius: 5px;
+    border: 2px solid #ccc;
+    padding: 5px;
+    font-size: 14px;
+}
+
+#searchButton {
+    font-family: 'BMJUA', sans-serif;
+    height: 100%;
+    width: auto; /* 자동으로 너비를 텍스트에 맞춤 */
+    padding: 0 10px; /* 좌우 패딩을 조정하여 버튼 너비 확보 */
+    border-radius: 12px; /* 모서리를 더 부드럽게 */
+    border: none; /* 테두리 제거로 좀 더 일체감 */
+    background-color: #A7E344;
+    color: white;
+    margin-left: 3px;
+    cursor: pointer;
+    white-space: nowrap; /* 버튼 안의 텍스트를 한 줄로 유지 */
+    font-size: 16px;
+
+    /* 부드럽게 떠 있는 듯한 뉴모피즘 효과 */
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.15), 
+                -3px -3px 8px rgba(255, 255, 255, 0.6);
+    transition: box-shadow 0.3s ease, transform 0.3s ease; /* 애니메이션 효과 추가 */
+}
+
+#searchButton:hover {
+    /* 호버 시 버튼이 살짝 눌리는 듯한 효과 */
+    box-shadow: inset 3px 3px 8px rgba(0, 0, 0, 0.15), 
+                inset -3px -3px 8px rgba(255, 255, 255, 0.6);
+    transform: scale(0.98); /* 살짝 작아지면서 눌리는 효과 */
+}
+
+#searchButton:active {
+    /* 클릭 시 눌리는 효과를 조금 더 강하게 */
+    box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.2), 
+                inset -2px -2px 6px rgba(255, 255, 255, 0.4);
+    transform: scale(0.95); /* 살짝 더 눌리는 듯한 효과 */
+}
+
+/* 로고 이미지 스타일 */
+
+#logo img {
+    width: 50px; /* 원하는 크기로 조정 */
+    height: auto; /* 이미지 비율을 유지 */
+    display: block;
+    margin: 0 auto; /* 이미지 가운데 정렬 */
+}
+
+h2 {
+    color: #ffffff; /* 흰색 */
+    text-align: center; /* 가로 중앙 정렬 */
+}
+
+/* 카테고리 및 재료 컨테이너 스타일 */
+#categories-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 20px;
+    margin-left: 20px; /* 왼쪽 여백 자동 조정 */
+    margin-right: auto; /* 오른쪽 여백 자동 조정 */
+}
+
+#categories, #ingredients {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    max-width: 300px; /* 카테고리와 재료의 컨테이너 최대 너비를 동일하게 설정 */
+}
+
+/* 재료 리스트 스타일 */
+#ingredients-container {
+    display: flex;
+    justify-content: flex-start; /* 가로 정렬을 왼쪽으로 설정 */
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-left: calc((100% - 300px) / 2); /* 카테고리와 동일한 왼쪽 여백 설정 */
+    margin-left: 10px;
+}
+
+/* 카테고리 및 재료 박스 스타일 */
+.category-button, .ingredient-box, .add-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px; /* 정사각형을 위한 너비 */
+    height: 60px; /* 정사각형을 위한 높이 */
+    background-color: #f3f4f6;
+    color: #040404;
+    border: 3px solid #f3f4f6;
+    border-radius: 5px;
+    font-size: 14px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    white-space: pre-line; /* 줄 바꿈 유지 */
+    box-sizing: border-box; /* 테두리와 패딩을 포함한 크기 계산 */
+    margin: 0; /* 여백 초기화 */
+}
+
+/* 버튼에 호버 효과 추가 */
+.category-button:hover, .ingredient-box:hover, .add-button:hover {
+    background-color: #03a9f4;
+}
+
+/* 등록 버튼 위치 조정 */
+.add-button {
+    align-self: center; /* 등록 버튼을 카테고리 박스의 가운데 정렬 */
+}
+
+/* + 글자 크기만 키우기 */
+.large-plus {
+    font-size: 24px; /* 원하는 크기로 조정 */
+}
+
+    </style>
+</head>
+<body>
+    <div id="search-container">
+        <div id="logo">
+            <img src="/images/zip.png" alt="Logo" onclick="redirectToFridge()">
+        </div>
+        <input type="text" id="ingredientSearch" placeholder="재료 이름 검색">
+        <button id="searchButton">검색</button>
+    </div>
+    
+    <h2>음식재료 카테고리</h2>
+    <!-- 카테고리 선택 -->
+    <div id="categories-container">
+        <div id="categories">
+            <!-- 카테고리 버튼들이 동적으로 추가됩니다 -->
+        </div>
+    </div>
+
+    <!-- 재료 리스트 -->
+    <h2>재료 리스트</h2>
+
+    <div id="ingredients-container">
+        <div id="ingredients">
+            <!-- 선택된 카테고리의 재료들이 여기에 동적으로 추가됩니다 -->
+        </div>
+    </div>
+</body>
+
+<script>
+    let allIngredients = []; // 전체 재료 목록을 저장할 전역 변수
+
+    // 전체 카테고리 및 재료를 한번에 가져오는 함수
+    function fetchAllIngredients() {
+        fetch('/category/select-category')
+        .then(response => response.json())
+        .then(categories => {
+            let ingredientPromises = categories.map(category => {
+                return fetch(`/category/select-category/${category.categoryID}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // 응답에서 재료 리스트 추출
+                        if (Array.isArray(data)) {
+                            return data; // 응답이 배열 형식인 경우
+                        } else if (data && Array.isArray(data.ingredients)) {
+                            return data.ingredients; // 응답이 { ingredients: [...] } 형식인 경우
+                        }
+                        return [];
+                    });
+            });
+
+            // 모든 카테고리에서 재료 가져오기 완료되면, 결과를 결합
+            return Promise.all(ingredientPromises);
+        })
+        .then(allCategoryIngredients => {
+            // 모든 카테고리의 재료들을 하나의 배열로 결합
+            allCategoryIngredients.forEach(ingredients => {
+                allIngredients = allIngredients.concat(ingredients);
+            });
+        })
+        .catch(error => console.error('Error fetching all ingredients:', error));
+    }
+
+    // 페이지 로드 시 전체 재료를 가져옴
+    window.onload = function() {
+        fetchAllIngredients(); // 전체 재료 목록을 가져옴
+        fetchCategories();     // 기존 카테고리 기능 호출
+    };
+
+    // 검색 버튼 클릭 시 재료 필터링 및 표시
+    document.getElementById('ingredientSearch').addEventListener('input', function() {
+        const searchTerm = document.getElementById('ingredientSearch').value.trim().toLowerCase(); // 검색어를 소문자로 변환 및 트림
+
+        // 카테고리와 타이틀 숨기기/보이기 처리
+        const categoryTitle = document.querySelector('h2');
+        const categoriesDiv = document.getElementById('categories');
+
+        if (searchTerm !== '') {
+            // 검색어가 있을 때는 카테고리 숨기기
+            categoryTitle.style.display = 'none';
+            categoriesDiv.style.display = 'none';
+        } else {
+            // 검색어가 비어있으면 카테고리 다시 보이기
+            categoryTitle.style.display = 'block';
+            categoriesDiv.style.display = 'flex'; // 원래 flex로 배치되었으므로 flex로 설정
+        }
+
+        // 검색어에 해당하는 재료만 필터링
+        const filteredIngredients = allIngredients.filter(ingredient => 
+            ingredient.ingredientName.toLowerCase().includes(searchTerm)
+        );
+
+        // 재료를 화면에 표시
+        displayIngredients(filteredIngredients);
+    });
+
+    // 재료 리스트를 화면에 표시하는 함수
+    function displayIngredients(ingredients) {
+        const ingredientContainer = document.getElementById('ingredients');
+        ingredientContainer.innerHTML = ''; // 기존 재료 리스트 초기화
+
+        // 재료 목록이 존재하는 경우 추가
+        if (Array.isArray(ingredients) && ingredients.length > 0) {
+            ingredients.forEach(ingredient => {
+                const div = document.createElement('div');
+                const ingredientNameFormatted = ingredient.ingredientName.replace("/", "/\n");
+                div.textContent = ingredientNameFormatted;
+                div.className = 'ingredient-box'; // 클래스 추가
+                div.onclick = () => selectIngredient(ingredient); // 재료 선택 시 호출
+                ingredientContainer.appendChild(div);
+            });
+        } else {
+            // 검색 결과가 없는 경우 처리
+            const noResultDiv = document.createElement('div');
+            noResultDiv.textContent = '검색 결과가 없습니다.';
+            noResultDiv.className = 'ingredient-box';
+            ingredientContainer.appendChild(noResultDiv);
+        }
+
+        // 항상 플러스 박스를 추가
+        const addButton = document.createElement('div');
+        addButton.textContent = '+';
+        addButton.className = 'add-button large-plus'; // 큰 글자 클래스를 추가
+        addButton.onclick = () => redirectToPageWithAuth('/category/ingredientsPlus'); // 재료 추가로 이동
+        ingredientContainer.appendChild(addButton);
+    }
+
+    // 로고 클릭 시 로컬스토리지에 있는 selectedFridgeType에 따라 냉장고 페이지로 리디렉션
+    function redirectToFridge() {
+        const selectedFridgeType = localStorage.getItem('selectedFridgeType'); // 로컬스토리지에서 fridge 타입 가져오기
+
+        if (!selectedFridgeType) {
+            alert('냉장고 타입이 선택되지 않았습니다.');
+            return;
+        }
+
+        // selectedFridgeType 값에 따라 URL을 설정
+        let url = '';
+        switch (selectedFridgeType) {
+            case '1':
+                url = 'http://127.0.0.1:8080/fridge/fourDoors';
+                break;
+            case '2':
+                url = 'http://127.0.0.1:8080/fridge/doubleDoors';
+                break;
+            case '3':
+                url = 'http://127.0.0.1:8080/fridge/nomalType';
+                break;
+            case '4':
+                url = 'http://127.0.0.1:8080/fridge/kimchiType';
+                break;
+            default:
+                alert('알 수 없는 냉장고 타입입니다.');
+                return;
+        }
+
+        // 설정된 URL로 리디렉션
+        window.location.href = url;
+    }
+
+    // + 버튼 누르면 페이지 이동시 토큰 보내는 함수 
+    function redirectToPageWithAuth(url) {
+        const accessToken = sessionStorage.getItem('accessToken');
+
+        // 토큰이 없으면 로그인 페이지로 리디렉션
+        if (!accessToken) {
+            localStorage.setItem('redirectAfterLogin', url);  // 로그인 후 돌아갈 URL 저장
+            alert('로그인이 필요합니다.');
+            window.location.href = '/user/login';
+            return;  
+        }
+
+        console.log('클라이언트에서 보내는 토큰:', accessToken);
+
+        // Fetch 요청에서 Authorization 헤더에 토큰 포함
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}` // 이 부분이 중요
+            }
+        })
+        .then(response => {
+            if (response.status === 401) {
+                alert('로그인이 필요합니다.');
+                window.location.href = '/user/login';
+            } else if (response.status === 403) {
+                alert('토큰이 만료되었습니다. 다시 로그인해주세요.');
+                window.location.href = '/user/login';
+            } else {
+                window.location.href = url;
+            }
+        })
+        .catch(error => console.error(`Error fetching ${url}:`, error));
+    }
+
+    // 카테고리 불러오기 함수 (기존 함수)
+    function fetchCategories() {
+        fetch('/category/select-category')
+        .then(response => response.json())
+        .then(categories => {
+            const categoryContainer = document.getElementById('categories');
+            
+            categories.forEach(category => {
+                const button = document.createElement('div');
+                const categoryNameFormatted = category.categoryName.replace("/", "/\n");
+                button.textContent = categoryNameFormatted;
+                button.className = 'category-button'; // 클래스 추가
+                button.onclick = () => selectCategory(category.categoryID); // 카테고리 선택 시 호출
+                categoryContainer.appendChild(button);
+            });
+
+            // 모든 카테고리 버튼이 추가된 후 + 버튼 추가
+            const addButton = document.createElement('div');
+            addButton.textContent = '+';
+            addButton.className = 'add-button large-plus'; // 큰 글자 클래스를 추가
+            addButton.onclick = () => {
+                redirectToPageWithAuth('/category/categoriesPlus'); // 로그인 확인 후 이동
+            };
+            categoryContainer.appendChild(addButton);
+
+        }).catch(
+            error => console.error('Error fetching categories:', error)
+        );
+    }
+
+    // 카테고리 선택 시 카테고리 ID를 로컬스토리지에 저장하고 재료 불러오기
+    function selectCategory(categoryID) {
+        localStorage.setItem('selectedCategoryID', categoryID); // 카테고리 ID 저장
+        console.log('Selected category ID:', categoryID); // 선택된 카테고리 ID 로깅
+        fetchIngredients(categoryID); // 선택된 카테고리의 재료 불러오기
+    }
+
+    // 특정 카테고리의 재료 가져오기
+    function fetchIngredients(categoryID) {
+        fetch(`/category/select-category/${categoryID}`, {
+            method: 'GET',
+        })
+        .then(response => {
+            if (response.status === 401) {
+                alert('로그인이 필요합니다.');
+                window.location.href = '/user/login';
+            } else if (response.status === 403) {
+                alert('토큰이 만료되었습니다. 다시 로그인해주세요.');
+                window.location.href = '/user/login';
+            } else {
+                return response.json();
+            }
+        })
+        .then(data => {
+            // 서버에서 응답받은 데이터가 배열인지 확인하고 처리
+            let ingredients = [];
+
+            if (Array.isArray(data)) {
+                ingredients = data; // 응답이 배열 형식인 경우
+            } else if (data && Array.isArray(data.ingredients)) {
+                ingredients = data.ingredients; // 응답이 { ingredients: [...] } 형식인 경우
+            } else {
+                console.error('Ingredients data is not an array or missing:', data);
+            }
+
+            displayIngredients(ingredients); // 재료를 화면에 표시하는 함수 호출
+        })
+        .catch(error => console.error('Error fetching ingredients:', error));
+    }
+
+    // 재료 선택 시 로컬 스토리지에 저장하고 로그인 상태에 따라 페이지 이동
+    function selectIngredient(ingredient) {
+        localStorage.setItem('selectedIngredient', JSON.stringify(ingredient));
+
+        const accessToken = sessionStorage.getItem('accessToken'); // 토큰 확인
+
+        if (accessToken) {
+            // 로그인 상태라면 ingredientDetail 페이지로 이동
+            window.location.href = `/ingredient/detail`;
+        } else {
+            // 로그인이 안 되어 있으면 로그인 페이지로 이동
+            localStorage.setItem('redirectAfterLogin', '/ingredient/detail'); // 로그인 후 돌아갈 페이지 저장
+            alert('재료를 추가하기 위해서는 로그인이 필요합니다.');
+            window.location.href = '/user/login';
+        }
+    }
+</script>
+
+
+
+</html>

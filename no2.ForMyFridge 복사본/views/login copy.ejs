@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Sign Up</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+
+    <style>
+
+        @font-face {
+            font-family: 'BMJUA';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'BMJUA', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #A7E344; /* 전체 화면 배경색 설정 */
+        }
+        .wrapper {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        .container {
+            border-radius: 10px;
+            box-shadow: inset 5px 5px 15px #d1d1d1, inset -5px -5px 15px #f0f0f0;
+            position: relative;
+            width: 100vw;
+            min-height: 100vh;
+            height: auto;
+            overflow: hidden;
+            background: #f9f9f6;
+            transition: all 0.5s ease;
+        }
+
+        .form-container {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            padding: 50px;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 50%;
+        }
+
+        .sign-in-container {
+            top: 0;
+            z-index: 2;
+            background-color: #fffcf4;
+        }
+
+        .sign-up-container {
+            top: 100%;
+            opacity: 0;
+            z-index: 1;
+            background-color: #fffcf4;
+            box-shadow: -8px -8px 16px rgba(255, 255, 255, 0.5), 8px 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .container.up-panel-active .sign-in-container {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+
+        .container.up-panel-active .sign-up-container {
+            transform: translateY(-100%);
+            opacity: 1;
+            z-index: 2;
+        }
+
+        form input {
+            background: #ffffff;
+            padding: 12px;
+            margin: 5px 0;
+            width: 100%;
+            border: 0;
+            outline: none;
+            border-radius: 20px;
+            box-shadow: inset 7px 2px 10px #d1d1d1, inset -5px -5px 12px #f0f0f0;
+            transition: opacity 0.1s ease;
+        }
+        .input-hidden {
+            opacity: 30%;
+        }
+
+        .sign-in-container input {
+            padding: 16px;
+            margin: 8px 0;
+        }
+
+        .sign-up-container input {
+            padding: 12px;
+            margin: 5px 0;
+        }
+
+        .sign-up-container h3 {
+            color: #333;
+            text-align: center;
+            width: 100%;
+        }
+
+        button {
+            font-family: 'BMJUA', sans-serif; /* 여기에 폰트 추가 */
+            border-radius: 20px;
+            border: none;
+            outline: none;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 15px 45px;
+            margin: 14px auto;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: transform 80ms ease-in;
+            display: block;
+        }
+
+        .form_btn {
+            font-family: 'BMJUA', sans-serif; /* 폰트 추가 */
+            background-color: #fffcf4;
+            color: #333;
+            box-shadow: -6px -6px 12px rgba(255, 255, 255, 0.7), 6px 6px 12px rgba(217, 213, 201, 0.5);
+            width: auto;
+            padding: 15px 45px;
+            text-align: center;
+        }
+        .form_btn:active {
+            box-shadow: inset 3px 3px 5px rgba(255, 255, 255, 0.6), inset -3px -3px 5px rgba(217, 213, 201, 0.4);
+        }
+
+        .overlay_btn {
+            background-color: #A7E344;
+            color: #333;
+            box-shadow: -5px -5px 10px #c2f985, 5px 5px 8px #8ecf40;
+        }
+
+        .overlay-container {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            height: 50%;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #A7E344;
+            color: #fff;
+            padding: 50px;
+            transition: transform 0.5s ease;
+            box-shadow: -8px -8px 16px rgba(255, 255, 255, 0.5), 8px 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .container.up-panel-active .overlay-container {
+            transform: translateY(-100%);
+        }
+
+        .error-message {
+            color: #03a9f4;
+            font-size: 12px;
+            margin-bottom: 10px;
+            display: none; /* 기본적으로 숨김 */
+        }
+
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="container" id="container">
+            <!-- Sign In Form -->
+            <div class="form-container sign-in-container">
+                <form id="loginForm">
+                    <h1 style="color: #333;">ZIP사 입장!</h1>
+                    <input type="text" id="userId" name="userId" placeholder="User ID" required>
+                    <input type="password" id="userPassword" name="userPassword" placeholder="Password" required>
+                    <button type="submit" class="form_btn">입장하기</button>
+                </form>
+            </div>
+            <!-- Sign Up Form -->
+            <!-- Sign Up Form -->
+            <div class="form-container sign-up-container">
+                <form id="signupForm">
+                    <h3 style="color: #333;">신선ZIP사 등록</h3>
+                    <input type="text" id="newUserId" name="newUserId" placeholder="User ID" required>
+                    <div id="userIdError" class="error-message">아이디는 3자 이상이어야 합니다.</div>
+                    <input type="text" id="newUserName" name="newUserName" placeholder="Name" required>
+                    <div id="userNameError" class="error-message">이름을 입력해주세요.</div>
+                    <input type="email" id="newUserEmail" name="newUserEmail" placeholder="Email" required>
+                    <div id="emailError" class="error-message">유효한 이메일 형식을 입력해주세요.</div>
+                    <input type="password" id="newUserPassword" name="newUserPassword" placeholder="Password" required>
+                    <div id="passwordError" class="error-message">비밀번호는 5자 이상이어야 합니다.</div>
+                    <button type="button" class="form_btn" onclick="signupRegister()">등록하기</button>
+                </form>
+            </div>
+            <!-- Overlay for Switching Forms -->
+            <div class="overlay-container">
+                <h1>안녕, 신선ZIP사!</h1>
+                <p>음식의 <span style="color: #03a9f4;">신선도</span>를 지켜줄 수 있도록 도와주면, 너의 <span style="color: #03a9f4;">계좌잔고</span>도 지키도록 도와줄게!!!</p>
+                <button id="toggleButton" class="overlay_btn">ZIP사등록</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const toggleButton = document.getElementById("toggleButton");
+        const container = document.getElementById("container");
+        const overlayContainer = document.querySelector(".overlay-container");
+
+        toggleButton.addEventListener("click", () => {
+            if (container.classList.contains("up-panel-active")) {
+                container.classList.remove("up-panel-active");
+                toggleButton.textContent = "Sign Up";
+                overlayContainer.querySelector("h1").textContent = "안녕, 신선ZIP사!";
+                overlayContainer.querySelector("p").textContent = "신선도를 지켜줄 수 있도록 도와주면, 너의 계좌잔고도 지키도록 도와줄게!!!";
+            } else {
+                container.classList.add("up-panel-active");
+                toggleButton.textContent = "신선ZIP사 출두";
+                overlayContainer.querySelector("h1").textContent = "어서와 신선ZIP사!";
+                overlayContainer.querySelector("p").innerHTML = 
+  `어서와서 냉장고의 신선함과 함께<span style="color: #03a9f4;"> 줄줄 새고 있는 너의 계좌잔고</span>를 지켜줘! 부탁이야`;
+
+            }
+        });
+
+// 로그인 폼 처리
+document.getElementById('loginForm').addEventListener('submit', function(event) {
+    event.preventDefault();  // 폼의 기본 제출 동작을 막음
+
+    // 입력 값들을 가져옴
+    const userId = document.getElementById('userId').value;
+    const userPassword = document.getElementById('userPassword').value;
+    const selectedFridgeType = localStorage.getItem('selectedFridgeType');
+
+    // 콘솔에 입력된 값들을 출력하여 확인
+    console.log("User ID: ", userId);
+    console.log("User Password: ", userPassword);
+    console.log("Selected Fridge Type: ", selectedFridgeType);
+
+    // fetch를 사용해 서버에 로그인 요청을 보냄
+    fetch('/user/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ userId, userPassword, selectedFridgeType })  // 서버로 보낼 데이터를 JSON 문자열로 변환
+    })
+    .then(response => {
+        console.log("서버 응답 상태: ", response.status);  // 서버 응답 상태 코드 출력
+        console.log("서버 응답 확인: ", response);  // 서버 응답을 전체 출력
+
+        // 응답이 성공적인지 체크
+        if (!response.ok) {
+            throw new Error(`서버 오류: ${response.status}`);
+        }
+
+        // 응답을 JSON 형식으로 파싱하여 처리
+        return response.json();
+    })
+    .then(data => {
+        console.log("서버로부터 받은 데이터: ", data);  // 서버로부터 받은 JSON 데이터 출력
+
+        if (data.message === '로그인 성공') {
+            // 성공 시 토큰과 섹션 정보를 저장
+            sessionStorage.setItem('accessToken', data.accessToken);  // accessToken을 세션 스토리지에 저장
+            localStorage.setItem('fridgeID', data.fridgeID);  // fridgeID를 로컬 스토리지에 저장
+            localStorage.setItem('sections', JSON.stringify(data.sections));  // 섹션 정보를 로컬 스토리지에 저장
+
+            // selectedFridgeType에 따라 적절한 URL로 리디렉션
+            let redirectUrl;
+            switch (selectedFridgeType) {
+                case '1':
+                    redirectUrl = 'http://127.0.0.1:8080/fridge/fourDoors';
+                    break;
+                case '2':
+                    redirectUrl = 'http://127.0.0.1:8080/fridge/doubleDoors';
+                    break;
+                case '3':
+                    redirectUrl = 'http://127.0.0.1:8080/fridge/nomalType';
+                    break;
+                case '4':
+                    redirectUrl = 'http://127.0.0.1:8080/fridge/kimchiType';
+                    break;
+                default:
+                    redirectUrl = 'http://127.0.0.1:8080/selectFridge';  // 기본 페이지
+                    break;
+            }
+
+            alert('로그인 성공');
+            window.location.href = redirectUrl;  // 선택된 URL로 리디렉션
+        } else {
+            alert('로그인 실패: ' + data.message);  // 실패 시 오류 메시지 출력
+        }
+    })
+    .catch(error => console.error('로그인 중 오류 발생:', error));  // 오류가 발생한 경우 출력
+});
+
+// 아이디 입력 후 엔터를 누르면 비밀번호 입력란으로 이동
+const userIdInput = document.getElementById('userId');
+const userPasswordInput = document.getElementById('userPassword');
+
+userIdInput.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        userPasswordInput.focus();
+    }
+});
+
+// 비밀번호 입력 후 엔터를 누르면 로그인 버튼이 자동으로 눌리도록 처리
+userPasswordInput.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        document.querySelector('button.form_btn').click(); // 로그인 버튼 클릭
+    }
+});
+
+
+    // 회원가입 유효성 검사
+
+    const newUserId = document.getElementById('newUserId');
+    const newUserName = document.getElementById('newUserName');
+    const newUserEmail = document.getElementById('newUserEmail');
+    const newUserPassword = document.getElementById('newUserPassword');
+    const userIdError = document.getElementById('userIdError');
+    const userNameError = document.getElementById('userNameError');
+    const emailError = document.getElementById('emailError');
+    const passwordError = document.getElementById('passwordError');
+
+    // 실시간 유효성 검사
+    newUserId.addEventListener('input', function () {
+        if (newUserId.value.length < 3) {
+            userIdError.style.display = 'block';
+        } else {
+            userIdError.style.display = 'none';
+        }
+    });
+
+    newUserName.addEventListener('input', function () {
+        if (newUserName.value.trim() === '') {
+            userNameError.style.display = 'block';
+        } else {
+            userNameError.style.display = 'none';
+        }
+    });
+
+    newUserEmail.addEventListener('input', function () {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(newUserEmail.value)) {
+            emailError.style.display = 'block';
+        } else {
+            emailError.style.display = 'none';
+        }
+    });
+
+    newUserPassword.addEventListener('input', function () {
+        if (newUserPassword.value.length < 5) {
+            passwordError.style.display = 'block';
+        } else {
+            passwordError.style.display = 'none';
+        }
+    });
+        
+    // 회원가입 요청 함수
+
+    
+    const signupForm = document.getElementById('signupForm');
+
+    // 각 입력 필드에서 'Enter' 키를 누르면 다음 입력 칸으로 포커스를 이동
+    newUserId.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            newUserName.focus();
+        }
+    });
+
+    newUserName.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            newUserEmail.focus();
+        }
+    });
+
+    newUserEmail.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            newUserPassword.focus();
+        }
+    });
+
+    
+
+// 기존 회원가입 함수 이름 register를 signupRegister로 변경
+function signupRegister() {
+    const newUserId = document.getElementById('newUserId').value;
+    const newUserName = document.getElementById('newUserName').value;
+    const newUserEmail = document.getElementById('newUserEmail').value;
+    const newUserPassword = document.getElementById('newUserPassword').value;
+
+    fetch('/user/register', { 
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ userId: newUserId, userName: newUserName, userEmail: newUserEmail, userPassword: newUserPassword })
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(error => { throw new Error(JSON.stringify(error.errors)); });
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.message === '회원가입 성공') {
+            alert('회원가입 성공! 로그인 페이지로 이동합니다.');
+            container.classList.remove("up-panel-active");
+            document.getElementById('signupForm').reset();
+        } else {
+            alert('회원가입 실패: ' + data.message);
+        }
+    })
+    .catch(error => {
+        try {
+            const errorMessages = JSON.parse(error.message);
+            alert('회원가입 실패:\n' + errorMessages.join('\n'));
+        } catch (e) {
+            alert('회원가입 중 오류가 발생했습니다: ' + error.message);
+        }
+    });
+}
+
+// 비밀번호 입력칸에서 'Enter' 키를 누르면 '등록하기' 버튼 클릭
+newUserPassword.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        signupRegister(); // 함수 이름을 signupRegister로 변경
+    }
+});
+
+
+        // 임시 데이터 저장
+        function saveTempData(redirectUrl) {
+            const accessToken = sessionStorage.getItem('accessToken');
+
+            if (!accessToken) {
+                alert('유효한 토큰이 없습니다.');
+                return;
+            }
+
+            fetch('/user/save-temp-data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + accessToken
+                },
+                // body: JSON.stringify({ selectedSectionID })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message === '섹션 정보가 성공적으로 저장되었습니다.') {
+                    alert('섹션 정보 저장 성공');
+                    // 섹션 정보 로컬 스토리지에 저장
+                    localStorage.setItem('sections', JSON.stringify(data.sections));
+
+                    // 재료 추가 페이지로 리디렉션
+                    window.location.href = redirectUrl;
+                } else {
+                    alert('임시 데이터 저장 실패: ' + data.message);
+                }
+            })
+            .catch(error => console.error('임시 데이터 저장 중 오류 발생:', error));
+        }
+    </script>
+</body>
+</html>
